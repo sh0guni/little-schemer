@@ -28,5 +28,15 @@
 (check-expect (member? 'tea '(coffee tea or milk)) #t)
 (check-expect (member? 'poached '(fried eggs and scrambled eggs)) #f)
 
+(define rember
+  (λ (a lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? (car lat) a) (cdr lat)]
+      [else (cons (car lat) (rember a (cdr lat)))])))
+
+(check-expect (rember 'mint '(lamb chops and mint jelly)) '(lamb chops and jelly))
+(check-expect (rember 'mint '(lamb chops and mint flavored mint jelly)) '(lamb chops and flavored mint jelly))
+(check-expect (rember 'toast '(bacon lettuce and tomato)) '(bacon lettuce and tomato))
+
 (test)
- 
