@@ -18,5 +18,15 @@
 (check-expect (lat? (quote ((Jack) Sprat could eat no chicket fat))) #f)
 (check-expect (lat? (quote (Jack (Sprat could) eat no chicket fat))) #f)
 (check-expect (lat? '()) #t)
+
+(define member?
+  (λ (a lat)
+    (cond
+      [(null? lat) #f]
+      [else (or (eq? a (car lat)) (member? a (cdr lat)))])))
+
+(check-expect (member? 'tea '(coffee tea or milk)) #t)
+(check-expect (member? 'poached '(fried eggs and scrambled eggs)) #f)
+
 (test)
  
