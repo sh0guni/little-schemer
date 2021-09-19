@@ -39,4 +39,13 @@
 (check-expect (rember 'mint '(lamb chops and mint flavored mint jelly)) '(lamb chops and flavored mint jelly))
 (check-expect (rember 'toast '(bacon lettuce and tomato)) '(bacon lettuce and tomato))
 
+(define firsts
+  (λ (l)
+    (error "missing implementation")))
+
+(check-expect (firsts '((a b) (c d) (e f))) '(a c e))
+(check-expect (firsts '()) '())
+(check-expect (firsts '((five plums) (four) (eleven green oranges))) '(five four eleven))
+(check-expect (firsts '(((five plums) (four)) (eleven green oranges)) ((no) more)) '(five four eleven))
+
 (test)
