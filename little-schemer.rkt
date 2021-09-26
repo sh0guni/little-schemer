@@ -71,4 +71,27 @@
       )))
 
 (check-expect (insertL 'd 'e '(a b c e f g)) '(a b c d e f g))
+
+(define subst
+  (λ (new old lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? old (car lat)) (cons new (cdr lat))]
+      [else (cons (car lat) (subst new old (cdr lat)))]
+      )))
+
+(check-expect (subst 'd 'e '(a b c e f g)) '(a b c d f g))
+
+(define subst2
+  (λ (new o1 o2 lat)
+    (cond
+      [(null? lat) '()]
+      [(or (eq? o1 (car lat)) (eq? o2 (car lat)))
+           (cons new (cdr lat))]
+      [else (cons (car lat) (subst2 new o1 o2 (cdr lat)))]
+      )))
+
+(check-expect (subst2 'vanilla 'chocolate 'banana '(banana ice cream with chocolate topping))
+              (quote (vanilla ice cream with chocolate topping)))
+
 (test)
