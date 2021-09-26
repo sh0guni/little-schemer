@@ -41,11 +41,14 @@
 
 (define firsts
   (λ (l)
-    (error "missing implementation")))
+    (cond
+      [(null? l) '()]
+      [else (cons (car (car l)) (firsts (cdr l)))]
+      )))
 
 (check-expect (firsts '((a b) (c d) (e f))) '(a c e))
 (check-expect (firsts '()) '())
 (check-expect (firsts '((five plums) (four) (eleven green oranges))) '(five four eleven))
-(check-expect (firsts '(((five plums) (four)) (eleven green oranges)) ((no) more)) '(five four eleven))
+(check-expect (firsts '(((five plums) (four)) (eleven green oranges) ((no) more))) '((five plums) eleven (no)))
 
 (test)
