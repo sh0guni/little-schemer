@@ -51,4 +51,24 @@
 (check-expect (firsts '((five plums) (four) (eleven green oranges))) '(five four eleven))
 (check-expect (firsts '(((five plums) (four)) (eleven green oranges) ((no) more))) '((five plums) eleven (no)))
 
+(define insertR
+  (λ (new old lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? old (car lat)) (cons old (cons new (cdr lat)))]
+      [else (cons (car lat) (insertR new old (cdr lat)))]
+      )))
+
+(check-expect (insertR 'e 'd '(a b c d f g)) '(a b c d e f g))
+(check-expect (insertR 'topping 'fudge '(ice cream with fudge for dessert)) '(ice cream with fudge topping for dessert))
+
+(define insertL
+  (λ (new old lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? old (car lat)) (cons new lat)]
+      [else (cons (car lat) (insertL new old (cdr lat)))]
+      )))
+
+(check-expect (insertL 'd 'e '(a b c e f g)) '(a b c d e f g))
 (test)
