@@ -94,4 +94,36 @@
 (check-expect (subst2 'vanilla 'chocolate 'banana '(banana ice cream with chocolate topping))
               (quote (vanilla ice cream with chocolate topping)))
 
+(define multirember
+  (λ (a lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? (car lat) a) (multirember a (cdr lat))]
+      [else (cons (car lat) (multirember a (cdr lat)))])))
+ 
+(check-expect (multirember 'mint '(lamb chops and mint jelly)) '(lamb chops and jelly))
+(check-expect (multirember 'mint '(lamb chops and mint flavored mint jelly)) '(lamb chops and flavored jelly))
+(check-expect (multirember 'toast '(bacon lettuce and tomato)) '(bacon lettuce and tomato))
+
+(define multiinsertR
+  (λ (new old lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? old (car lat)) (cons old (cons new (multiinsertR new old (cdr lat))))]
+      [else (cons (car lat) (multiinsertR new old (cdr lat)))]
+      )))
+
+(check-expect (multiinsertR 'e 'd '(a b c d f g)) '(a b c d e f g))
+(check-expect (multiinsertR 'topping 'fudge '(fudge ice cream with fudge for dessert)) '(fudge topping ice cream with fudge topping for dessert))
+
+(define multisubst
+  (λ (new old lat)
+    (cond
+      [(null? lat) '()]
+      [(eq? old (car lat)) (cons new (multisubst new old (cdr lat)))]
+      [else (cons (car lat) (multisubst new old (cdr lat)))]
+      )))
+
+(check-expect (multisubst 'd 'e '(a b c e f e g)) '(a b c d f d g))
+
 (test)
