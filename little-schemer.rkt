@@ -1,6 +1,8 @@
 #lang racket
 (require test-engine/racket-tests)
 
+(provide atom?)
+
 (define atom?
   (λ (x)
     (and (not (pair? x)) (not (null? x)))))
