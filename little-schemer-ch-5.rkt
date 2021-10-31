@@ -1,6 +1,7 @@
 #lang racket
 (require test-engine/racket-tests)
 (require "little-schemer.rkt")
+(require "little-schemer-ch-4.rkt")
 
 (define rember*
   (λ (a l)
@@ -121,5 +122,55 @@
       )))
 
 (check-expect (member* 'chips '((potato) (chips ((with) fish) (chips)))) #t)
+
+(define leftmost
+  (λ (l)
+    (cond
+      [(atom? (car l)) (car l)]
+      [else (leftmost (car l))])))
+
+(check-expect (leftmost
+               '((potato) (chips ((with) fish) (chips))))
+               'potato)
+
+(define eqlist?
+  (λ (l1 l2)
+    (cond
+      [(null? l1) (null? l2)]
+      [(null? l2) #f]
+      [else (and (equal? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))]
+      )))
+
+(define equal?
+  (λ (s1 s2)
+    (cond
+      [(or (atom? s1) (atom? s2)) (eqan s1 s2)]
+      [else (eqlist? s1 s2)])))
+
+(check-expect (eqlist? '(strawberry ice cream) '(strawberry ice cream)) #t)
+(check-expect (eqlist? '(strawberry ice cream) '(strawberry cream ice)) #f)
+(check-expect (eqlist? '(banana ((split))) '((banana) (split))) #f)
+(check-expect (eqlist?
+               '(beef ((sausage)) (and (soda)))
+               '(beef ((salami)) (and (soda))))
+              #f)
+(check-expect (eqlist?
+               '(beef ((sausage)) (and (soda)))
+               '(beef ((sausage)) (and (soda))))
+              #t)
+(check-expect (eqlist? '() '(strawberry ice cream)) #f)
+(check-expect (eqlist? '(strawberry ice cream) '()) #f)
+(check-expect (eqlist? '(strawberry ice cream) '((ice))) #f)
+(check-expect (eqlist? '((ice)) '(strawberry ice cream)) #f)
+
+(check-expect (equal? 'a 'a) #t)
+(check-expect (equal? 'a 'b) #f)
+(check-expect (equal? '(a) '(a)) #t)
+(check-expect (equal? '(a) '(b)) #f)
+(check-expect (equal? 'a '(a)) #f)
+(check-expect (equal? '(a) 'a) #f)
+(check-expect (equal? '() '()) #t)
+(check-expect (equal? '(a) '((a))) #f)
+(check-expect (equal? '((a)) '(a)) #f)
 
 (test)

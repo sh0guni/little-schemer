@@ -2,6 +2,8 @@
 (require test-engine/racket-tests)
 (require "little-schemer.rkt")
 
+(provide eqan)
+
 (define plus
   (λ (x y)
     (cond
