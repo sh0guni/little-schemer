@@ -2,6 +2,9 @@
 (require test-engine/racket-tests)
 
 (provide atom?)
+(provide member?)
+(provide multirember)
+(provide firsts)
 
 (define atom?
   (λ (x)
